@@ -1,0 +1,47 @@
+# Builds and publishes the language package when a v<joomla version>.<revision> tag is pushed.
+name: Release ko-KR pack
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Resolve the version from the tag
+        id: v
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          echo "joomla=$(echo "${GITHUB_REF_NAME#v}" | cut -d. -f1-3)" >> "$GITHUB_OUTPUT"
+
+      # The English source the keys are checked against: the matching Joomla tag.
+      - name: Fetch the Joomla sources
+        run: |
+          git clone --depth 1 --branch "${{ steps.v.outputs.joomla }}" https://github.com/joomla/joomla-cms "$RUNNER_TEMP/joomla-cms"
+
+      - name: Validate and build
+        env:
+          JOOMLA_SRC: ${{ runner.temp }}/joomla-cms
+        run: |
+          python3 tools/work.py check
+          php tools/phpcheck.php
+          python3 tools/build.py --version "${{ steps.v.outputs.version }}"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "dist/pkg_ko-KR-${{ steps.v.outputs.version }}.zip" \
+            --title "Korean (ko-KR) pack ${{ steps.v.outputs.version }}" \
+            --notes "Korean language pack for Joomla ${{ steps.v.outputs.joomla }}. Install it with System → Install → Extensions → Upload Package File."

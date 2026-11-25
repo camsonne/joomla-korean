@@ -127,9 +127,34 @@ PKG = """<?xml version="1.0" encoding="UTF-8"?>
 	</files>
 	<blockChildUninstall>true</blockChildUninstall>
 	<updateservers>
-		<server type="extension" name="Korean (ko-KR) Language Pack" priority="1">https://raw.githubusercontent.com/camsonne/joomla-korean/master/updates/pkg_ko-KR.xml</server>
+		<server type="extension" name="Korean (ko-KR) Language Pack" priority="1">https://raw.githubusercontent.com/camsonne/joomla-korean/main/updates/pkg_ko-KR.xml</server>
 	</updateservers>
 </extension>
+"""
+
+UPDATE = """<?xml version="1.0" encoding="utf-8"?>
+<updates>
+	<update>
+		<name>Korean (ko-KR) Language Pack</name>
+		<description>Korean language pack for Joomla {joomla}</description>
+		<element>pkg_ko-KR</element>
+		<type>package</type>
+		<client>site</client>
+		<version>{version}</version>
+		<infourl title="Release notes">https://github.com/camsonne/joomla-korean/releases/tag/v{version}</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">{url}</downloadurl>
+			<downloadsource type="full" format="zip">{url}</downloadsource>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Joomla Korean contributors</maintainer>
+		<maintainerurl>https://github.com/camsonne/joomla-korean</maintainerurl>
+		<targetplatform name="joomla" version="{platform}"/>
+		<php_minimum>8.3</php_minimum>
+	</update>
+</updates>
 """
 
 def write(path, text):
@@ -165,7 +190,16 @@ def main():
         z.write(os.path.join(ROOT, "pkg_ko-KR.xml"), "pkg_ko-KR.xml")
         for zp in zips:
             z.write(zp, os.path.basename(zp))
-    print(out)
+    # update-server manifest for this release (polled by sites that installed the pack)
+    import hashlib
+    sha = hashlib.sha256(open(out, "rb").read()).hexdigest()   # printed only: zips are not byte-reproducible
+    url = f"https://github.com/camsonne/joomla-korean/releases/download/v{a.version}/pkg_ko-KR-{a.version}.zip"
+    major_minor = ".".join(a.version.split(".")[:2])
+    os.makedirs(os.path.join(ROOT, "updates"), exist_ok=True)
+    write(os.path.join(ROOT, "updates", "pkg_ko-KR.xml"),
+          UPDATE.format(joomla=joomla, version=a.version, url=url,
+                        platform=major_minor.replace(".", r"\.")))
+    print(out, sha)
 
 if __name__ == "__main__":
     main()

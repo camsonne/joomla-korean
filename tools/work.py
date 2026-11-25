@@ -34,7 +34,11 @@ def ini_files(client):
     return sorted(os.path.basename(p) for p in glob.glob(en_path(client, "*.ini")))
 
 def tokens(s):
-    return sorted(re.findall(r"%(?:\d+\$)?[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#?\w+;|\[[A-Za-z0-9_]+\]|\$\{?\w+\}?", s))
+    """Things a translation must keep: printf specifiers (positional ones count as plain),
+    {NAMES}, HTML tags, \\n, numeric entities and $variables. Named entities such as &amp; may be dropped."""
+    s = re.sub(r"%\d+\$", "%", s)
+    s = re.sub(r"""\s+(?:title|aria-label|alt)=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" or aria-label="" attribute is fine
+    return sorted(re.findall(r"%[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#\d+;?|\[[A-Za-z0-9_]+\]|\$\{?[A-Za-z0-9_]+\}?", s))
 
 def todo(client, f, start=1, n=80):
     en, ko = read(en_path(client, f)), read(ko_path(client, f))
@@ -54,6 +58,7 @@ def apply(client, f, batch):
         num, val = m.groups()
         k = pend[int(num) - 1]
         val = val.strip()
+        if val == '=': val = en[k]          # keep the English text as it is (placeholder text, brand names)
         if en[k].endswith(' ') and not val.endswith(' '): val += ' '
         ko[k] = val
     write(client, f, en, ko)
@@ -92,7 +97,7 @@ def check():
                 if re.search(r'(?<!\\)"', v): print(f"{c}/{f}:{ln_no}: unescaped quote in {k}"); bad += 1
                 if tokens(v) != tokens(en[k]):
                     print(f"{c}/{f}:{ln_no}: placeholders differ in {k}: {tokens(en[k])} vs {tokens(v)}"); bad += 1
-                if not v.strip(): print(f"{c}/{f}:{ln_no}: empty {k}"); bad += 1
+                if not v.strip() and en[k].strip(): print(f"{c}/{f}:{ln_no}: empty {k}"); bad += 1
     print("OK" if not bad else f"{bad} problem(s)")
     return bad
 
@@ -114,6 +119,21 @@ def reuse():
                 ko.update(add); write(c, f, en, ko); n += len(add)
     print(f"reused {n} translations")
 
+
+def multi(client, batch):
+    """A batch file with '@@ file.ini' headers followed by 'N|korean' lines."""
+    cur, lines = None, []
+    def flush():
+        if cur and lines:
+            tmp = batch + ".part"
+            open(tmp, "w", encoding="utf-8").write("\n".join(lines) + "\n")
+            apply(client, cur, tmp)
+    for ln in open(batch, encoding="utf-8").read().split("\n"):
+        if ln.startswith("@@ "):
+            flush(); cur, lines = ln[3:].strip(), []
+        elif ln.strip():
+            lines.append(ln)
+    flush()
 
 def reuse_text():
     """Same English text under another key: reuse when every existing translation of it agrees."""
@@ -140,5 +160,6 @@ if __name__ == "__main__":
     elif a[0] == "todo": todo(a[1], a[2], int(a[3]) if len(a) > 3 else 1, int(a[4]) if len(a) > 4 else 80)
     elif a[0] == "apply": apply(a[1], a[2], a[3])
     elif a[0] == "reuse": reuse(); reuse_text()
+    elif a[0] == "multi": multi(a[1], a[2])
     elif a[0] == "check": sys.exit(1 if check() else 0)
     else: sys.exit(__doc__)
