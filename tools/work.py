@@ -34,7 +34,11 @@ def ini_files(client):
     return sorted(os.path.basename(p) for p in glob.glob(en_path(client, "*.ini")))
 
 def tokens(s):
-    return sorted(re.findall(r"%(?:\d+\$)?[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#?\w+;|\[[A-Za-z0-9_]+\]|\$\{?\w+\}?", s))
+    """Things a translation must keep: printf specifiers (positional ones count as plain),
+    {NAMES}, HTML tags, \\n, numeric entities and $variables. Named entities such as &amp; may be dropped."""
+    s = re.sub(r"%\d+\$", "%", s)
+    s = re.sub(r"""\s+title=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" attribute is fine
+    return sorted(re.findall(r"%[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#\d+;?|\[[A-Za-z0-9_]+\]|\$\{?[A-Za-z0-9_]+\}?", s))
 
 def todo(client, f, start=1, n=80):
     en, ko = read(en_path(client, f)), read(ko_path(client, f))
