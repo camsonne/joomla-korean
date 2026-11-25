@@ -37,7 +37,7 @@ def tokens(s):
     """Things a translation must keep: printf specifiers (positional ones count as plain),
     {NAMES}, HTML tags, \\n, numeric entities and $variables. Named entities such as &amp; may be dropped."""
     s = re.sub(r"%\d+\$", "%", s)
-    s = re.sub(r"""\s+title=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" attribute is fine
+    s = re.sub(r"""\s+(?:title|aria-label)=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" or aria-label="" attribute is fine
     return sorted(re.findall(r"%[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#\d+;?|\[[A-Za-z0-9_]+\]|\$\{?[A-Za-z0-9_]+\}?", s))
 
 def todo(client, f, start=1, n=80):
