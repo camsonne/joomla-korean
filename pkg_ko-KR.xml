@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="package" method="upgrade">
+	<name>Korean (ko-KR) Language Pack</name>
+	<packagename>ko-KR</packagename>
+	<version>6.2.1.1</version>
+	<creationDate>2026-11</creationDate>
+	<author>Joomla Korean contributors</author>
+	<authorUrl>https://github.com/camsonne/joomla-korean</authorUrl>
+	<copyright>(C) 2005 Open Source Matters, Inc.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<description>한국어(ko-KR) 언어 팩 for Joomla 6.2.1</description>
+	<url>https://github.com/camsonne/joomla-korean</url>
+	<packager>Joomla Korean contributors</packager>
+	<packagerurl>https://github.com/camsonne/joomla-korean</packagerurl>
+	<files>
+		<file type="language" client="site" id="ko-KR">site_ko-KR.zip</file>
+		<file type="language" client="administrator" id="ko-KR">admin_ko-KR.zip</file>
+		<file type="language" client="api" id="ko-KR">api_ko-KR.zip</file>
+	</files>
+	<blockChildUninstall>true</blockChildUninstall>
+	<updateservers>
+		<server type="extension" name="Korean (ko-KR) Language Pack" priority="1">https://raw.githubusercontent.com/camsonne/joomla-korean/master/updates/pkg_ko-KR.xml</server>
+	</updateservers>
+</extension>
