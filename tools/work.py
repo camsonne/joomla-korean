@@ -37,7 +37,7 @@ def tokens(s):
     """Things a translation must keep: printf specifiers (positional ones count as plain),
     {NAMES}, HTML tags, \\n, numeric entities and $variables. Named entities such as &amp; may be dropped."""
     s = re.sub(r"%\d+\$", "%", s)
-    s = re.sub(r"""\s+(?:title|aria-label)=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" or aria-label="" attribute is fine
+    s = re.sub(r"""\s+(?:title|aria-label|alt)=(?:'[^']*'|\\?"[^"]*?\\?")""", "", s)   # a translated title="" or aria-label="" attribute is fine
     return sorted(re.findall(r"%[sdfu]|%%|\{[A-Za-z0-9_]+\}|</?[A-Za-z][^>]*>|\\n|&#\d+;?|\[[A-Za-z0-9_]+\]|\$\{?[A-Za-z0-9_]+\}?", s))
 
 def todo(client, f, start=1, n=80):
@@ -58,6 +58,7 @@ def apply(client, f, batch):
         num, val = m.groups()
         k = pend[int(num) - 1]
         val = val.strip()
+        if val == '=': val = en[k]          # keep the English text as it is (placeholder text, brand names)
         if en[k].endswith(' ') and not val.endswith(' '): val += ' '
         ko[k] = val
     write(client, f, en, ko)
@@ -96,7 +97,7 @@ def check():
                 if re.search(r'(?<!\\)"', v): print(f"{c}/{f}:{ln_no}: unescaped quote in {k}"); bad += 1
                 if tokens(v) != tokens(en[k]):
                     print(f"{c}/{f}:{ln_no}: placeholders differ in {k}: {tokens(en[k])} vs {tokens(v)}"); bad += 1
-                if not v.strip(): print(f"{c}/{f}:{ln_no}: empty {k}"); bad += 1
+                if not v.strip() and en[k].strip(): print(f"{c}/{f}:{ln_no}: empty {k}"); bad += 1
     print("OK" if not bad else f"{bad} problem(s)")
     return bad
 
