@@ -60,8 +60,8 @@ php tools/phpcheck.php                                             # same parser
 python3 tools/build.py --version 6.2.1.2                           # builds dist/ and updates/
 ```
 
-`work.py check` compares every file with the English source in `$JOOMLA_SRC` (default
-`/home/user/joomla/joomla-cms`, a checkout of the matching Joomla tag).
+`work.py check` compares every file with the English source in `$JOOMLA_SRC`, a checkout of the matching Joomla tag
+(`git clone --depth 1 --branch 6.2.1 https://github.com/joomla/joomla-cms`). The variable is required.
 
 ## Updating to a new Joomla release (6.2.x / 6.3)
 
