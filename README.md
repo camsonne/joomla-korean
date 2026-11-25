@@ -36,8 +36,12 @@ The version is `<Joomla version>.<pack revision>`, for example `6.2.1.1`.
 * Placeholder text (Lorem ipsum, brand and protocol names) is left as in the English source.
 * Keys are never renamed; an untranslated key would simply fall back to `en-GB`.
 
-The translation was produced by an AI assistant (Claude) from the English 6.2.1 source files and has **not yet been
-reviewed by native speakers**. Corrections are very welcome — see *Contributing*.
+> **Disclaimer — unofficial, interim pack.** This is *not* the official Joomla Korean translation. It was produced
+> automatically by an AI assistant (Claude) from the English Joomla 6.2.1 language files, using the Korean wording of
+> the existing Joomla installer pack (`installation/language/ko-KR`) as a style reference, and it has **not yet been
+> reviewed by native speakers**. It is a stop-gap until an official Korean 6.2 language pack is released; once that
+> exists, please switch to it. Use at your own risk, and corrections are very welcome — see *Contributing*.
+> "Joomla!" is a registered trademark of Open Source Matters, Inc.; this project is not affiliated with or endorsed by it.
 
 ## Layout
 
