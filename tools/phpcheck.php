@@ -1,4 +1,5 @@
 <?php
+// SPDX-License-Identifier: GPL-2.0-or-later
 // Parse every ko-KR .ini exactly the way Joomla's LanguageHelper::parseIniFile() does:
 // parse_ini_file(..., INI_SCANNER_RAW) with every PHP warning turned into an error.
 set_error_handler(static function ($errno, $err) { throw new \Exception($err); }, E_WARNING);

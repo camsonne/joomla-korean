@@ -82,5 +82,10 @@ A tag `vX.Y.Z.N` runs `.github/workflows/release.yml`, which validates, builds a
 
 ## License
 
-GNU General Public License version 2 or later (same as Joomla). The language keys and English reference texts come
-from Joomla, © Open Source Matters, Inc.
+**GPL-2.0-or-later** — GNU General Public License, version 2 or (at your option) any later version, the same
+license as Joomla. The full text of version 2 is in [LICENSE.txt](LICENSE.txt).
+
+* The translations are derivative works of the Joomla language files (© Open Source Matters, Inc.), so they must be
+  distributed under the GPL as well.
+* The scripts in `tools/` carry an `SPDX-License-Identifier: GPL-2.0-or-later` header.
+* © 2026 Joomla Korean contributors.

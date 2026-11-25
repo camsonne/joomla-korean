@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Build the Joomla ko-KR language package.
 
   build.py [--version 6.2.1.1]   writes metadata into site/ admin/ api/ and dist/pkg_ko-KR.zip
@@ -19,8 +20,8 @@ META = """<?xml version="1.0" encoding="UTF-8"?>
 	<creationDate>{date}</creationDate>
 	<author>Joomla Korean contributors</author>
 	<authorUrl>https://github.com/camsonne/joomla-korean</authorUrl>
-	<copyright>(C) 2005 Open Source Matters, Inc.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<copyright>(C) 2026 Joomla Korean contributors. Based on Joomla! language files, (C) 2005 Open Source Matters, Inc.</copyright>
+	<license>GNU General Public License version 2 or later (GPL-2.0-or-later); see LICENSE.txt</license>
 	<description><![CDATA[ko-KR {client} language]]></description>
 	<metadata>
 		<name>Korean (South Korea)</name>
@@ -44,8 +45,8 @@ INSTALL = """<?xml version="1.0" encoding="UTF-8"?>
 	<creationDate>{date}</creationDate>
 	<author>Joomla Korean contributors</author>
 	<authorUrl>https://github.com/camsonne/joomla-korean</authorUrl>
-	<copyright>(C) {copyright} Open Source Matters, Inc.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<copyright>(C) 2026 Joomla Korean contributors. Based on Joomla! language files, (C) {copyright} Open Source Matters, Inc.</copyright>
+	<license>GNU General Public License version 2 or later (GPL-2.0-or-later); see LICENSE.txt</license>
 	<description>ko-KR {client} language</description>
 	<files>
 		<folder>/</folder>
@@ -114,8 +115,8 @@ PKG = """<?xml version="1.0" encoding="UTF-8"?>
 	<creationDate>{date}</creationDate>
 	<author>Joomla Korean contributors</author>
 	<authorUrl>https://github.com/camsonne/joomla-korean</authorUrl>
-	<copyright>(C) 2005 Open Source Matters, Inc.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<copyright>(C) 2026 Joomla Korean contributors. Based on Joomla! language files, (C) 2005 Open Source Matters, Inc.</copyright>
+	<license>GNU General Public License version 2 or later (GPL-2.0-or-later); see LICENSE.txt</license>
 	<description>한국어(ko-KR) 언어 팩 for Joomla {joomla}</description>
 	<url>https://github.com/camsonne/joomla-korean</url>
 	<packager>Joomla Korean contributors</packager>
