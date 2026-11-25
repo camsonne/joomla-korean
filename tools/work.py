@@ -115,6 +115,21 @@ def reuse():
     print(f"reused {n} translations")
 
 
+def multi(client, batch):
+    """A batch file with '@@ file.ini' headers followed by 'N|korean' lines."""
+    cur, lines = None, []
+    def flush():
+        if cur and lines:
+            tmp = batch + ".part"
+            open(tmp, "w", encoding="utf-8").write("\n".join(lines) + "\n")
+            apply(client, cur, tmp)
+    for ln in open(batch, encoding="utf-8").read().split("\n"):
+        if ln.startswith("@@ "):
+            flush(); cur, lines = ln[3:].strip(), []
+        elif ln.strip():
+            lines.append(ln)
+    flush()
+
 def reuse_text():
     """Same English text under another key: reuse when every existing translation of it agrees."""
     seen = {}
@@ -140,5 +155,6 @@ if __name__ == "__main__":
     elif a[0] == "todo": todo(a[1], a[2], int(a[3]) if len(a) > 3 else 1, int(a[4]) if len(a) > 4 else 80)
     elif a[0] == "apply": apply(a[1], a[2], a[3])
     elif a[0] == "reuse": reuse(); reuse_text()
+    elif a[0] == "multi": multi(a[1], a[2])
     elif a[0] == "check": sys.exit(1 if check() else 0)
     else: sys.exit(__doc__)
