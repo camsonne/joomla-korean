@@ -127,7 +127,7 @@ PKG = """<?xml version="1.0" encoding="UTF-8"?>
 	</files>
 	<blockChildUninstall>true</blockChildUninstall>
 	<updateservers>
-		<server type="extension" name="Korean (ko-KR) Language Pack" priority="1">https://raw.githubusercontent.com/camsonne/joomla-korean/master/updates/pkg_ko-KR.xml</server>
+		<server type="extension" name="Korean (ko-KR) Language Pack" priority="1">https://raw.githubusercontent.com/camsonne/joomla-korean/main/updates/pkg_ko-KR.xml</server>
 	</updateservers>
 </extension>
 """
