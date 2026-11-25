@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Translation workflow helpers for the Joomla ko-KR pack.
 
   work.py status                      progress per client
@@ -11,7 +12,9 @@ Only translated keys are written; Joomla falls back to en-GB for the rest.
 """
 import os, re, sys, glob
 
-SRC = os.environ.get("JOOMLA_SRC", "/home/user/joomla/joomla-cms")
+SRC = os.environ.get("JOOMLA_SRC", "")
+if not SRC:
+    sys.exit("Set JOOMLA_SRC to a checkout of the matching Joomla tag, e.g. JOOMLA_SRC=~/joomla-cms")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EN = {"site": "language", "admin": "administrator/language", "api": "api/language"}
 LINE = re.compile(r'^([^=;\s][^=]*?)\s*=\s*"(.*)"\s*(;.*)?$')

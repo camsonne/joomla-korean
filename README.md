@@ -36,8 +36,12 @@ The version is `<Joomla version>.<pack revision>`, for example `6.2.1.1`.
 * Placeholder text (Lorem ipsum, brand and protocol names) is left as in the English source.
 * Keys are never renamed; an untranslated key would simply fall back to `en-GB`.
 
-The translation was produced by an AI assistant (Claude) from the English 6.2.1 source files and has **not yet been
-reviewed by native speakers**. Corrections are very welcome — see *Contributing*.
+> **Disclaimer — unofficial, interim pack.** This is *not* the official Joomla Korean translation. It was produced
+> automatically by an AI assistant (Claude) from the English Joomla 6.2.1 language files, using the Korean wording of
+> the existing Joomla installer pack (`installation/language/ko-KR`) as a style reference, and it has **not yet been
+> reviewed by native speakers**. It is a stop-gap until an official Korean 6.2 language pack is released; once that
+> exists, please switch to it. Use at your own risk, and corrections are very welcome — see *Contributing*.
+> "Joomla!" is a registered trademark of Open Source Matters, Inc.; this project is not affiliated with or endorsed by it.
 
 ## Layout
 
@@ -60,8 +64,8 @@ php tools/phpcheck.php                                             # same parser
 python3 tools/build.py --version 6.2.1.2                           # builds dist/ and updates/
 ```
 
-`work.py check` compares every file with the English source in `$JOOMLA_SRC` (default
-`/home/user/joomla/joomla-cms`, a checkout of the matching Joomla tag).
+`work.py check` compares every file with the English source in `$JOOMLA_SRC`, a checkout of the matching Joomla tag
+(`git clone --depth 1 --branch 6.2.1 https://github.com/joomla/joomla-cms`). The variable is required.
 
 ## Updating to a new Joomla release (6.2.x / 6.3)
 
@@ -78,5 +82,10 @@ A tag `vX.Y.Z.N` runs `.github/workflows/release.yml`, which validates, builds a
 
 ## License
 
-GNU General Public License version 2 or later (same as Joomla). The language keys and English reference texts come
-from Joomla, © Open Source Matters, Inc.
+**GPL-2.0-or-later** — GNU General Public License, version 2 or (at your option) any later version, the same
+license as Joomla. The full text of version 2 is in [LICENSE.txt](LICENSE.txt).
+
+* The translations are derivative works of the Joomla language files (© Open Source Matters, Inc.), so they must be
+  distributed under the GPL as well.
+* The scripts in `tools/` carry an `SPDX-License-Identifier: GPL-2.0-or-later` header.
+* © 2026 Joomla Korean contributors.
